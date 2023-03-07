@@ -4,16 +4,7 @@ class TasksController < ApplicationController
   def index
     tasks = user.tasks
 
-    serialized_tasks = tasks.map do |task|
-      {
-        'id' => task.id,
-        'userId' => user.id,
-        'status' => task.status,
-        'name' => task.name,
-        'createdAt' => task.created_at,
-        'completedAt' => task.completed_at
-      }
-    end
+    serialized_tasks = tasks.map { |task| TaskSerializer.new(task).as_json }
 
     render(json: serialized_tasks)
   end
@@ -21,41 +12,16 @@ class TasksController < ApplicationController
   def show
     task = user.tasks.find(params[:id])
 
-    serialized_task = {
-      'id' => task.id,
-      'userId' => user.id,
-      'status' => task.status,
-      'name' => task.name,
-      'createdAt' => task.created_at,
-      'completedAt' => task.completed_at
-    }
-
-    render(json: serialized_task)
+    render(json: TaskSerializer.new(task).as_json)
   end
 
   def create
     task = user.tasks.new(create_task_params.merge(status: :pending))
 
     if task.save
-      serialized_task = {
-        'id' => task.id,
-        'userId' => user.id,
-        'status' => task.status,
-        'name' => task.name,
-        'createdAt' => task.created_at,
-        'completedAt' => task.completed_at
-      }
-
-      render(status: :created, json: serialized_task)
+      render(status: :created, json: TaskSerializer.new(task).as_json)
     else
-      serialized_error = {
-        'error' => {
-          'message' => 'Validation error',
-          'details' => task.errors.full_messages
-        }
-      }
-
-      render(status: :unprocessable_entity, json: serialized_error)
+      render(status: :unprocessable_entity, json: ValidationErrorSerializer.new(task.errors.full_messages).as_json)
     end
   end
 
@@ -102,16 +68,7 @@ class TasksController < ApplicationController
       end
     end
 
-    serialized_task = {
-      'id' => task.id,
-      'userId' => user.id,
-      'status' => task.status,
-      'name' => task.name,
-      'createdAt' => task.created_at,
-      'completedAt' => task.completed_at
-    }
-
-    render(json: serialized_task)
+    render(json: TaskSerializer.new(task).as_json)
   end
 
   private
