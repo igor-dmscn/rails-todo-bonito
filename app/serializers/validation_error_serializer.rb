@@ -7,7 +7,7 @@ class ValidationErrorSerializer
   def as_json
     {
       'error' => {
-        'message' => 'Validation Error',
+        'message' => 'Validation error',
         'details' => errors
       }
     }
