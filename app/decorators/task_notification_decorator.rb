@@ -5,6 +5,10 @@ class TaskNotificationDecorator
     @task = task
   end
 
+  def self.notify(**args)
+    new(**args).notify
+  end
+
   def user
     task&.user
   end

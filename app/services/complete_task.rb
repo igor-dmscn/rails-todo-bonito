@@ -25,6 +25,6 @@ class CompleteTask < ApplicationService
   private_constant :NOTIFICATION_DECORATORS
 
   def notify_user
-    task.user.notification_preferences['task_completed'].each { |channel| NOTIFICATION_DECORATORS[channel].new(task:) }
+    task.user.notification_preferences['task_completed'].each { |channel| NOTIFICATION_DECORATORS[channel].notify(task:) }
   end
 end

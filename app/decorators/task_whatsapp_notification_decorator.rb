@@ -1,7 +1,9 @@
 class TaskWhatsappNotificationDecorator < TaskNotificationDecorator
   def initialize(task:)
     super(task:)
-    
+  end
+
+  def notify
     whatsapp_client = FakeWhatsappClient.new(
       account_id: ENV.fetch('FAKE_WHATSAPP_ACCOUNT_ID'),
       auth_token: ENV.fetch('FAKE_WHATSAPP_AUTH_TOKEN')

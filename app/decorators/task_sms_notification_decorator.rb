@@ -1,7 +1,9 @@
 class TaskSmsNotificationDecorator < TaskNotificationDecorator
   def initialize(task:)
     super(task:)
-    
+  end
+
+  def notify
     sms_client = FakeSmsClient.new(
       account_id: ENV.fetch('FAKE_SMS_ACCOUNT_ID'),
       auth_token: ENV.fetch('FAKE_SMS_AUTH_TOKEN')
